@@ -34,25 +34,20 @@ class Game {
     const rowDiff = toRow - fromRow;
     const colDiff = toCol - fromCol;
 
-    // Check if the move is within bounds
     if (toRow < 0 || toRow > 4 || toCol < 0 || toCol > 4) {
       return false;
     }
 
-    // Check if the destination contains a friendly piece
     const destPiece = this.board[toRow][toCol];
     if (destPiece && destPiece[0] === player) {
       return false;
     }
 
     if (type.startsWith('P')) {
-      // Pawn: moves one block in any direction (not diagonally)
       return (Math.abs(rowDiff) === 1 && colDiff === 0) || (rowDiff === 0 && Math.abs(colDiff) === 1);
     } else if (type === 'H1') {
-      // Hero1: moves two blocks straight in any direction
       return (Math.abs(rowDiff) === 2 && colDiff === 0) || (Math.abs(colDiff) === 2 && rowDiff === 0);
     } else if (type === 'H2') {
-      // Hero2: moves two blocks diagonally in any direction
       return Math.abs(rowDiff) === 2 && Math.abs(colDiff) === 2;
     }
     return false;
@@ -78,7 +73,6 @@ class Game {
     const [player, type] = piece.split('-');
     const capturedPieces = [];
 
-    // Handle Hero1 and Hero2 path capturing
     if (type === 'H1' || type === 'H2') {
       const rowStep = Math.sign(toRow - fromRow);
       const colStep = Math.sign(toCol - fromCol);
@@ -95,8 +89,6 @@ class Game {
         currentCol += colStep;
       }
     }
-
-    // Capture piece at the destination
     const destPiece = this.board[toRow][toCol];
     if (destPiece && destPiece[0] !== player) {
       capturedPieces.push(destPiece);
